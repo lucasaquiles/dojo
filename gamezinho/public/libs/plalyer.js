@@ -13,6 +13,14 @@ function Player(x, y) {
         rect(this.x, this.y,this.width, this.height);
     }
 
+    this.setX = (x) => {
+        this.x = x;
+    }
+
+    this.setY = (y) => {
+        this.y = y;
+    }
+
     this.move = () => {
         
 		this.x+= this.xdir*5;
@@ -37,3 +45,5 @@ function Player(x, y) {
     }
     
 }
+
+
