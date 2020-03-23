@@ -1,14 +1,13 @@
 var ball;
-var barPlayer, player2;
+var player1, player2;
 
 function setup() {
 
     createCanvas(400, 600);
-    // ball = new Ball(width, height);
+    ball = new Ball(width/2, height/2);
 
-    barPlayer = new Player((width/2)-30, 10);
+    player1 = new Player((width/2)-30, 10);
     player2 = new Player((width/2)-30, height-30);
-    
 }
 
 function draw() {
@@ -18,29 +17,26 @@ function draw() {
     fill("#fff")
     rect(0, height/2, width, 5)
 
-    // ball.show();
-
      player2.show();
-    // player2.move();
+    player1.show();
 
-    // ball.move(barPlayer);
+    ball.show();
+    ball.move();
+     
+    player2.move();
+    player1.move();
 
-    // // if(ball.point) {
-    // //     ball.resetPosition(width/2, height/2);   
-    // // }
+    if(ball.hits(player1)) {
+        console.log("opa");
+    }
 
-    // ball.move(player2);
-    
-    // // if(ball.point) {
-    // //     ball.resetPosition(width/2, height/2);   
-    // // }
-    
-    // //ball.move();
+    if(ball.hits(player2)) {
+        console.log("opa2");
+    }
 
-    barPlayer.show();
-    // barPlayer.move();
-
-    // barPlayer.keyListener();
+    player1.keyListener();
+    player2.keyListener();
 }
+
 
 

@@ -10,28 +10,29 @@ function Player(x, y) {
 
     this.show =  () => {
         
-        rect(this.x, this.y, 50, 5);
+        rect(this.x, this.y,this.width, this.height);
     }
 
-
     this.move = () => {
-
+        
 		this.x+= this.xdir*5;
 	}
 
 	this.setDir = (dir) => {
-		this.xdir = dir;
+        
+        this.xdir = dir;
     }
     
     this.keyListener = () => {
+        
         if(keyCode === RIGHT_ARROW){
-    
-            barPlayer.setDir(1);
+            console.log("key", keyCode, RIGHT_ARROW);
+            this.setDir(1);
         }
     
         if(keyCode === LEFT_ARROW){
     
-            barPlayer.setDir(-1);
+            this.setDir(-1);
         }
     }
     
