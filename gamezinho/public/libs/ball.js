@@ -12,6 +12,7 @@ function Ball(width, height) {
     this.point = false;
 
     this.show = () => {
+        
         ellipseMode(RADIUS);
         noStroke(); 
 		ellipse(this.x, this.y, this.r,this.r);    
@@ -50,6 +51,7 @@ function Ball(width, height) {
             this.xdirection = 0;
             this.y = height;
             this.x = width;
+            
          }
         
         
