@@ -24,9 +24,7 @@ function Ball(width, height) {
         let distance = sqrt(dx * dx + dy * dy);
         let minDist = (player.height*2+this.r) + (this.r);
   
-        console.log("dist", distance, minDist);
         if(distance < minDist) {
-            console.log("opa");
             
             this.ydirection *= -1;
             
