@@ -1,5 +1,9 @@
 var express = require("express");
 var app = express();
+var cors = require('cors');
+
+app.use(cors());
+
 var server = app.listen(3000);
 
 let socket = require('socket.io');
@@ -15,6 +19,8 @@ console.log("running..");
 
 function newConnection(socket) {
     
+    socket.on('game-control', gameControl);
+
     socket.on('hit', hit);
     socket.on('move', move);
     socket.on('move2', move2);
@@ -22,15 +28,14 @@ function newConnection(socket) {
     if(players.length < 2){
         console.log("new connection: ",socket.id);
         players.push(socket.id);
-    }else{
+     }else{
 
-        console.log("lotou")
+    //     console.log("lotou")
     }
 
     function move(data) {
 
-        console.log("data", data);
-
+        // console.log("data", data);
         socket.broadcast.emit('move', data);
     }
 
@@ -41,6 +46,11 @@ function newConnection(socket) {
 
     function hit(data) {
         socket.broadcast.emit('hit', data);
+    }
+
+    function gameControl(data) {
+
+        socket.broadcast.emit('game-control', data);
     }
 }
 

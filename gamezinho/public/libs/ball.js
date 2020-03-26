@@ -11,6 +11,14 @@ function Ball(width, height) {
 
     this.point = false;
 
+    this.updateViewDirection = (direction) => {
+        
+        this.xdirection= direction;
+        this.ydirection = direction;
+
+        console.log("mudou a direção para ", this.xdirection, this.ydirection);
+    }
+
     this.show = () => {
         
         ellipseMode(RADIUS);
@@ -20,8 +28,9 @@ function Ball(width, height) {
 
     this.hits = (player) => {
         
-        let dx = player.x - this.x;
-        let dy = player.y - this.y;
+        let dx = player.x - (this.x);
+        let dy = player.y - (this.y);
+
         let distance = sqrt(dx * dx + dy * dy);
         let minDist = (player.height*2+this.r) + (this.r);
   
@@ -50,17 +59,12 @@ function Ball(width, height) {
             this.ydirection = 0;
             this.xdirection = 0;
             this.y = height;
-            this.x = width;
-            
+            this.x = width;ball
          }
-        
-        
         
          if(this.x + this.r > width * 2 || this.x < this.r ) {
             
-                 this.xdirection *= -1;
+                this.xdirection *= -1;
          }
-            
-        // }
     }
 }
