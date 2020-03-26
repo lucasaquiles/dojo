@@ -5,7 +5,8 @@ var inited = false;
 
 const MOVE_PLAYER1 = 'move';
 const MOVE_PLAYER2 = 'move2';
-const GAME_CONTROL = 'game-control'
+const GAME_CONTROL = 'game-control';
+const BALL_ROLLING = 'ball-rolling';
 
 function setup() {
 
@@ -15,11 +16,17 @@ function setup() {
     player1 = new Player((width/2)-30, 10);
     player2 = new Player((width/2)-30, height-30);
 
-    socket = io.connect("http://192.168.0.6:3000");
+    socket = io.connect("http://localhost:3000");
 
     socket.on(MOVE_PLAYER1, player1Moviment);
     socket.on(MOVE_PLAYER2, player2Moviment); 
     socket.on(GAME_CONTROL, gameControl);
+    socket.on(BALL_ROLLING, updateBall);
+}
+
+function updateBall(data) {
+
+   // ball.updateBall(data.x, data.y);
 }
 
 function setInit(status) {
@@ -58,7 +65,7 @@ function draw() {
     ball.show();
 
     if(this.inited) {
-        console.log("começou");
+        
         ball.move();
     }
     
@@ -73,6 +80,11 @@ function draw() {
     socket.emit(MOVE_PLAYER2, {
         y: player2.y,
         x: player1.x
+    })
+
+    socket.emit(BALL_ROLLING, {
+        x: ball.x*-1,
+        y: ball.y*1
     })
 
     if(ball.hits(player1)) {

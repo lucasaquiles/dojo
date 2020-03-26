@@ -24,18 +24,19 @@ function newConnection(socket) {
     socket.on('hit', hit);
     socket.on('move', move);
     socket.on('move2', move2);
+    socket.on('ball-rolling', ballRolling);
 
     if(players.length < 2){
-        console.log("new connection: ",socket.id);
+        console.log("new connection: ", socket.id);
         players.push(socket.id);
-     }else{
-
-    //     console.log("lotou")
+    }
+    
+    function ballRolling(data) {
+        socket.broadcast.emit('ball-rolling', data);
     }
 
     function move(data) {
 
-        // console.log("data", data);
         socket.broadcast.emit('move', data);
     }
 
