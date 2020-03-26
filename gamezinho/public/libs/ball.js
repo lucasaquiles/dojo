@@ -11,8 +11,13 @@ function Ball(width, height) {
 
     this.point = false;
 
+    this.updateBall = (x, y) => {
+        this.x = x;
+        this.y = y;
+    }
+
     this.updateViewDirection = (direction) => {
-        
+
         this.xdirection= direction;
         this.ydirection = direction;
 
