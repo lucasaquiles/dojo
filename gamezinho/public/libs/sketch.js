@@ -3,6 +3,10 @@ var player1, player2;
 var socket;
 var inited = false;
 
+const MOVE_PLAYER1 = 'move';
+const MOVE_PLAYER2 = 'move2';
+const GAME_CONTROL = 'game-control'
+
 function setup() {
 
     createCanvas(400, 600);
@@ -11,9 +15,21 @@ function setup() {
     player1 = new Player((width/2)-30, 10);
     player2 = new Player((width/2)-30, height-30);
 
-    socket = io.connect("http://localhost:3000");
-    socket.on('move', player1Moviment) 
-    socket.on('move2', player2Moviment) 
+    socket = io.connect("http://192.168.0.6:3000");
+
+    socket.on(MOVE_PLAYER1, player1Moviment);
+    socket.on(MOVE_PLAYER2, player2Moviment); 
+    socket.on(GAME_CONTROL, gameControl);
+}
+
+function setInit(status) {
+    this.inited = status;   
+}
+
+function gameControl(data) {
+   
+    setInit(data.started);
+    ball.updateViewDirection(-1);
 }
 
 function player1Moviment(data) {
@@ -29,7 +45,8 @@ function player2Moviment(data) {
 }
 
 function draw() {
-
+    init();
+    
     background("#2b580c");
     noStroke()
     fill("#fff")
@@ -39,21 +56,21 @@ function draw() {
     player1.show();  
 
     ball.show();
-    init();
-    if(inited) {
 
+    if(this.inited) {
+        console.log("começou");
         ball.move();
     }
     
     player1.move();
     player2.move();
     
-    socket.emit('move', {
+    socket.emit(MOVE_PLAYER1, {
         y: player1.y,
         x: player2.x
     })
 
-    socket.emit('move2', {
+    socket.emit(MOVE_PLAYER2, {
         y: player2.y,
         x: player1.x
     })
@@ -71,8 +88,11 @@ function draw() {
 
 function init() {
     if(keyCode === ENTER){
-        console.log("enter pressed");   
        this.inited = true;
+
+       socket.emit(GAME_CONTROL, {
+            started:this.inited
+       });
     }
 }
 
