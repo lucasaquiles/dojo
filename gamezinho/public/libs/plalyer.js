@@ -34,7 +34,6 @@ function Player(x, y) {
     this.keyListener = () => {
         
         if(keyCode === RIGHT_ARROW){
-            console.log("key", keyCode, RIGHT_ARROW);
             this.setDir(1);
         }
     

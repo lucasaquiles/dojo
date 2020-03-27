@@ -12,21 +12,20 @@ function setup() {
 
     createCanvas(400, 600);
     ball = new Ball(width/2, height/2);
-
     player1 = new Player((width/2)-30, 10);
     player2 = new Player((width/2)-30, height-30);
 
     socket = io.connect("http://localhost:3000");
 
+    socket.on(GAME_CONTROL, gameControl);
     socket.on(MOVE_PLAYER1, player1Moviment);
     socket.on(MOVE_PLAYER2, player2Moviment); 
-    socket.on(GAME_CONTROL, gameControl);
     socket.on(BALL_ROLLING, updateBall);
 }
 
 function updateBall(data) {
-
-   // ball.updateBall(data.x, data.y);
+   ball.setColor("#c00");
+   ball.updateBall(data.x*-1, data.y*-1);
 }
 
 function setInit(status) {
@@ -64,8 +63,11 @@ function draw() {
 
     ball.show();
 
-    if(this.inited) {
-        
+    if(ball.point) {
+        ball.resetPosition(width/2, height/2);
+    }
+
+    if(inited) {
         ball.move();
     }
     
@@ -83,8 +85,9 @@ function draw() {
     })
 
     socket.emit(BALL_ROLLING, {
-        x: ball.x*-1,
-        y: ball.y*1
+        x: ball.x,
+        y: ball.y,
+        point: ball.point
     })
 
     if(ball.hits(player1)) {
@@ -99,7 +102,9 @@ function draw() {
 }
 
 function init() {
+
     if(keyCode === ENTER){
+       
        this.inited = true;
 
        socket.emit(GAME_CONTROL, {

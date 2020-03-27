@@ -12,16 +12,25 @@ function Ball(width, height) {
     this.point = false;
 
     this.updateBall = (x, y) => {
+        console.log("antes: ", this.x, this.y);
+        
         this.x = x;
         this.y = y;
+
+        console.log("mudou a direção para ", this.x, this.y);
     }
 
     this.updateViewDirection = (direction) => {
 
-        this.xdirection= direction;
-        this.ydirection = direction;
-
+        this.xdirection = this.xdirection * direction;
+        
         console.log("mudou a direção para ", this.xdirection, this.ydirection);
+    }
+
+    this.setColor = (cor) => {
+
+        let c = color(cor); 
+        fill(c);
     }
 
     this.show = () => {
@@ -54,6 +63,16 @@ function Ball(width, height) {
         this.y = y;
     }
 
+    this.reset = () => {
+
+        this.ydirection = 0;
+        this.xdirection = 0;
+        this.y = height;
+        this.x = width;
+
+        this.point = true;
+    }
+
     this.move = () => {
 
         this.x = this.x + this.xspeed * this.xdirection;
@@ -61,10 +80,7 @@ function Ball(width, height) {
        
          if(this.y + this.r > (height * 2) ||this.y < this.r ) {
             
-            this.ydirection = 0;
-            this.xdirection = 0;
-            this.y = height;
-            this.x = width;ball
+            this.reset();
          }
         
          if(this.x + this.r > width * 2 || this.x < this.r ) {

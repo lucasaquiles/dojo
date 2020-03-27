@@ -15,13 +15,10 @@ app.use(express.static('public'));
 
 io.sockets.on('connection', newConnection);
 
-console.log("running..");
-
 function newConnection(socket) {
     
     socket.on('game-control', gameControl);
-
-    socket.on('hit', hit);
+    // socket.on('hit', hit);
     socket.on('move', move);
     socket.on('move2', move2);
     socket.on('ball-rolling', ballRolling);
@@ -45,9 +42,9 @@ function newConnection(socket) {
         socket.broadcast.emit('move2', data);
     }
 
-    function hit(data) {
-        socket.broadcast.emit('hit', data);
-    }
+    // function hit(data) {
+    //     socket.broadcast.emit('hit', data);
+    // }
 
     function gameControl(data) {
 
