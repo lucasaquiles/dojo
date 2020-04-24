@@ -45,7 +45,7 @@ Ajuste dos pesos
 * Learning rate
 * Momentum
 * maneiras de encontrar a combinação de pesos
-	* força brutaitatiba
+	* força bruta
 	* simullated anealing
 	* algorítimos genéticos
 
