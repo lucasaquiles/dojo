@@ -5,6 +5,14 @@ function Room(roomName, users) {
 
     this.roomName = roomName;
     this.users = users;
+
+    this.showUsers = () => {
+
+        this.users.forEach((user) => { 
+            console.log("[user.id]: "+user.id+" - "+user.username);
+        })
+    }
+    
 }
 
 function User(id, username) {
@@ -29,14 +37,21 @@ function onDisconect(socket) {
 
     // console.log('Got disconnect!');
 }
-
+/**
+ * acessa uma url com o nome da sala e o username
+ * se a sala exitir e tiver vaga na sala, participa do jogo
+ * depois de confirmado na sala, inicia o jogo
+ */
 module.exports.socketListener = function(socket) {
     
     socket.on('disconnect', onDisconect);
     
-    socket.on("joinRoom", function(room) {
-        
-        console.log("room: ", room);
+    socket.on("sendToClient", function(data){
+        console.log("emit", data);
+        socket.to(data.id).emit(data.resume, data.content);
+    });
+
+    socket.on("join", function(room) {
         
         if (!(/[^\w.]/.test(room.name))) {
             
@@ -55,7 +70,7 @@ module.exports.socketListener = function(socket) {
 
                             const user = new User(socket.id, room.username);
                             currentRoom.users.push(user);
-
+                            
                             socket.in(room.name).emit('initGame', user);
                             return;
                         }
@@ -63,7 +78,8 @@ module.exports.socketListener = function(socket) {
                 }else{
 
                     const newRoom = new Room(room.name, new Array());
-                    newRoom.users.push(new User(socket.id, room.username));
+                    const user = new User(socket.id, room.username);
+                    newRoom.users.push(user);
                     
                     rooms.push(newRoom);
                 }

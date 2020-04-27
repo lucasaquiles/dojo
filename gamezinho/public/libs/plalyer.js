@@ -1,5 +1,7 @@
-function Player(x, y, name) {
-    this.name = name;
+function Player(x, y) {
+
+    this.id;
+    this.name;
     this.x = x;
     this.y = y;
 
@@ -7,6 +9,14 @@ function Player(x, y, name) {
     this.width = 50;
 
     this.xdir = 0;
+
+    this.setId = (id) => {
+        this.id = id;
+    }
+    
+    this.setName = (name) => {
+        this.name = name;
+    }
 
     this.show =  () => {
         
