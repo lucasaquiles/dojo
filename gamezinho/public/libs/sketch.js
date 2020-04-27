@@ -8,9 +8,12 @@ const MOVE_PLAYER2 = 'move2';
 const GAME_CONTROL = 'game-control';
 const BALL_ROLLING = 'ball-rolling';
 
-function setup() {
+var room;
 
+function setup() {
+    
     createCanvas(400, 600);
+    
     ball = new Ball(width/2, height/2);
 
     player1 = new Player((width/2)-30, 10);
@@ -19,14 +22,28 @@ function setup() {
     initSocket();
 }
 
-
 function initSocket() {
 
-    socket = io.connect("http://localhost:3000");
+    const url = getURL();
+    const splitedURL = url.split("/");
+    this.room = splitedURL[3];
+    const username = splitedURL[4];
 
-    socket.on(GAME_CONTROL, gameControl);
-    socket.on(MOVE_PLAYER1, player1Moviment);
-    socket.on(MOVE_PLAYER2, player2Moviment); 
+    console.log("usuario: ", username);
+    console.log("room: ", room);
+
+    socket = io.connect("http://localhost:3000");
+    
+    socket.emit("joinRoom", {username: username, name: room});
+
+    socket.on('initGame', function(dataPlayerB){
+       
+    })
+
+
+    // socket.on(GAME_CONTROL, gameControl);
+    // socket.on(MOVE_PLAYER1, player1Moviment);
+    // socket.on(MOVE_PLAYER2, player2Moviment); 
     // socket.on(BALL_ROLLING, updateBall);
 }
 
@@ -58,54 +75,60 @@ function player2Moviment(data) {
 }
 
 function draw() {
+
     init();
-    console.log("draw", this);
+    
     background("#2b580c");
     noStroke()
     fill("#fff")
     rect(0, height/2, width, 5)
 
-    player2.show();
-    player1.show();  
 
-    ball.show();
-
-    if(ball.point) {
-        ball.resetPosition(width/2, height/2);
+    if(this.inited) {
+        console.log("começou");
     }
 
-    if(inited) {
-        ball.move();
-    }
+    // player2.show();
+    // player1.show();  
+
+    // ball.show();
+
+    // if(ball.point) {
+    //     ball.resetPosition(width/2, height/2);
+    // }
+
+    // if(inited) {
+    //     ball.move();
+    // }
     
-    player1.move();
-    player2.move();
+    // player1.move();
+    // player2.move();
     
-    socket.emit(MOVE_PLAYER1, {
-        y: player1.y,
-        x: player2.x
-    })
+    // socket.emit(MOVE_PLAYER1, {
+    //     y: player1.y,
+    //     x: player2.x
+    // })
 
-    socket.emit(MOVE_PLAYER2, {
-        y: player2.y,
-        x: player1.x
-    })
+    // socket.emit(MOVE_PLAYER2, {
+    //     y: player2.y,
+    //     x: player1.x
+    // })
 
-    socket.emit(BALL_ROLLING, {
-        x: ball.x,
-        y: ball.y,
-        point: ball.point
-    })
+    // socket.emit(BALL_ROLLING, {
+    //     x: ball.x,
+    //     y: ball.y,
+    //     point: ball.point
+    // })
 
-    if(ball.hits(player1)) {
+    // if(ball.hits(player1)) {
        
-    }
+    // }
 
-    if(ball.hits(player2)) {
+    // if(ball.hits(player2)) {
        
-    }
+    // }
 
-    player2.keyListener();
+    // player2.keyListener();
 }
 
 function init() {

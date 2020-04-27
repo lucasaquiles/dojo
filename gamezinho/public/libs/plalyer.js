@@ -1,5 +1,5 @@
-function Player(x, y) {
-
+function Player(x, y, name) {
+    this.name = name;
     this.x = x;
     this.y = y;
 

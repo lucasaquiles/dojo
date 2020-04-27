@@ -1,56 +1,59 @@
-var express = require("express");
-var app = express();
-var cors = require('cors');
+const express = require("express");
+
+const app = express();
+const cors = require('cors');
 
 app.use(cors());
 
-var server = app.listen(3000);
+const server = app.listen(3000);
+const socket = require('socket.io');
+const io = socket(server);
 
-let socket = require('socket.io');
-var io = socket(server);
+const ws = require('./socketListener');
 
-var players = [];
+app.use('/:room/:username', express.static('public'), function(req, res, next) {
 
-app.use(express.static('public'));
+    next(req, res);
+});
 
-io.sockets.on('connection', newConnection);
+io.sockets.on('connection', ws.socketListener);
 
-function newConnection(socket) {
+// function initSocketConnection(socket) {
     
-    socket.on('game-control', gameControl);
-    // socket.on('hit', hit);
-    socket.on('move', move);
-    socket.on('move2', move2);
-    socket.on('ball-rolling', ballRolling);
+//     socket.on('game-control', gameControl);
 
-    if(players.length < 2){
-        console.log("new connection: ", socket.id);
-        players.push(socket.id);
-    }
+//     socket.on('move', move);
+//     socket.on('move2', move2);
+//     socket.on('ball-rolling', ballRolling);
+
+//     if(players.length < 2){
+//         console.log("new connection: ", socket.id);
+//         players.push(socket.id);
+//     }
     
-    function ballRolling(data) {
-        socket.broadcast.emit('ball-rolling', data);
-    }
+//     function ballRolling(data) {
+//         socket.broadcast.emit('ball-rolling', data);
+//     }
 
-    function move(data) {
+//     function move(data) {
 
-        socket.broadcast.emit('move', data);
-    }
+//         socket.broadcast.emit('move', data);
+//     }
 
-    function move2(data) {
+//     function move2(data) {
 
-        socket.broadcast.emit('move2', data);
-    }
+//         socket.broadcast.emit('move2', data);
+//     }
 
-    // function hit(data) {
-    //     socket.broadcast.emit('hit', data);
-    // }
+//     // function hit(data) {
+//     //     socket.broadcast.emit('hit', data);
+//     // }
 
-    function gameControl(data) {
+//     function gameControl(data) {
 
-        socket.broadcast.emit('game-control', data);
-    }
-}
+//         socket.broadcast.emit('game-control', data);
+//     }
+// }
 
 
 
